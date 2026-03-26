@@ -1077,7 +1077,7 @@ print("data3:", all_values_same(data3))
 """
 
 #9.Write a program to create two lists and generate a dictionary with keys from list1 and values from list2.
-
+"""
 list1 = ["a", "b", "c", "d"]
 list2 = [10, 20, 30, 40]
 
@@ -1089,3 +1089,344 @@ print("List1:", list1)
 print("List2:", list2)
 print("Generated Dictionary:", my_dict)
 
+"""
+
+
+                                             #============== Experiment-9 ==============
+
+
+#1.Create a class of student (name, sap id, marks[phy,chem,maths] ). Create 3 objects by taking inputs from the user and display details of all students
+"""
+class Student:
+    def __init__(self, name, sap_id, phy, chem, maths):
+        self.name = name
+        self.sap_id = sap_id
+        self.phy = phy
+        self.chem = chem
+        self.maths = maths
+
+    def display(self):
+        print("\n--- Student Details ---")
+        print(f"Name      : {self.name}")
+        print(f"SAP ID    : {self.sap_id}")
+        print(f"Physics   : {self.phy}")
+        print(f"Chemistry : {self.chem}")
+        print(f"Maths     : {self.maths}")
+        
+students = []
+for i in range(3):
+    print(f"\nEnter details for Student {i+1}:")
+    name = input("Enter name: ")
+    sap_id = input("Enter SAP ID: ")
+    phy = int(input("Enter Physics marks: "))
+    chem = int(input("Enter Chemistry marks: "))
+    maths = int(input("Enter Maths marks: "))
+
+    student = Student(name, sap_id, phy, chem, maths)
+    students.append(student)
+
+print("\n========== All Students ==========")
+for s in students:
+    s.display()                                             
+"""
+
+#Add constructor in the above class to initialize student details of n students and implement following methods:
+"""
+a)Display() student details
+b)Find Marks_percentage() of each student
+c)Display result() [Note: if marks in each subject >40% than Pass else Fail]
+d)Write a Function to find average of the class.
+"""
+"""
+class Student:
+    def __init__(self, name, sap_id, phy, chem, maths):
+        self.name = name
+        self.sap_id = sap_id
+        self.phy = phy
+        self.chem = chem
+        self.maths = maths
+
+    def display(self):
+        print("\n--- Student Details ---")
+        print(f"Name      : {self.name}")
+        print(f"SAP ID    : {self.sap_id}")
+        print(f"Physics   : {self.phy}")
+        print(f"Chemistry : {self.chem}")
+        print(f"Maths     : {self.maths}")
+
+    def find_marks_percentage(self):
+        total = self.phy + self.chem + self.maths
+        percentage = total / 3
+        return percentage
+
+    def display_result(self):
+        if self.phy > 40 and self.chem > 40 and self.maths > 40:
+            print(f"{self.name} Result: PASS")
+        else:
+            print(f"{self.name} Result: FAIL")
+
+def class_average(students):
+    total_percentage = 0
+    for s in students:
+        total_percentage += s.find_marks_percentage()
+    avg = total_percentage / len(students)
+    return avg
+
+students = []
+n = int(input("Enter number of students: "))
+for i in range(n):
+    print(f"\nEnter details for Student {i+1}:")
+    name = input("Enter name: ")
+    sap_id = input("Enter SAP ID: ")
+    phy = int(input("Enter Physics marks: "))
+    chem = int(input("Enter Chemistry marks: "))
+    maths = int(input("Enter Maths marks: "))
+
+    student = Student(name, sap_id, phy, chem, maths)
+    students.append(student)
+
+print("\n========== Student Records ==========")
+for s in students:
+    s.display()
+    print(f"Percentage: {s.find_marks_percentage():.2f}%")
+    s.display_result()
+
+print("\n========== Class Average ==========")
+print(f"Average Percentage of Class: {class_average(students):.2f}%")
+"""
+
+#Create programs to implement different types of inheritances.
+"""
+# 1. Single Inheritance
+class Parent:
+    def show_parent(self):
+        print("Single Inheritance → Parent class")
+
+class Child(Parent):
+    def show_child(self):
+        print("Single Inheritance → Child class")
+        
+# 2. Multiple Inheritance
+class Father:
+    def show_father(self):
+        print("Multiple Inheritance → Father class")
+
+class Mother:
+    def show_mother(self):
+        print("Multiple Inheritance → Mother class")
+
+class ChildMultiple(Father, Mother):
+    def show_child(self):
+        print("Multiple Inheritance → Child class")
+
+
+# 3. Multilevel Inheritance
+class Grandparent:
+    def show_grandparent(self):
+        print("Multilevel Inheritance → Grandparent class")
+
+class ParentMulti(Grandparent):
+    def show_parent(self):
+        print("Multilevel Inheritance → Parent class")
+
+class ChildMulti(ParentMulti):
+    def show_child(self):
+        print("Multilevel Inheritance → Child class")
+
+
+# 4. Hierarchical Inheritance
+class ParentHier:
+    def show_parent(self):
+        print("Hierarchical Inheritance → Parent class")
+
+class Child1(ParentHier):
+    def show_child1(self):
+        print("Hierarchical Inheritance → Child1 class")
+
+class Child2(ParentHier):
+    def show_child2(self):
+        print("Hierarchical Inheritance → Child2 class")
+
+
+# 5. Hybrid Inheritance (combination)
+class A:
+    def show_a(self):
+        print("Hybrid Inheritance → Class A")
+
+class B(A):
+    def show_b(self):
+        print("Hybrid Inheritance → Class B")
+
+class C(A):
+    def show_c(self):
+        print("Hybrid Inheritance → Class C")
+
+class D(B, C):  
+    def show_d(self):
+        print("Hybrid Inheritance → Class D")
+
+
+# ------------------ DRIVER CODE ------------------
+print("\n--- Single Inheritance ---")
+s = Child()
+s.show_parent()
+s.show_child()
+
+print("\n--- Multiple Inheritance ---")
+m = ChildMultiple()
+m.show_father()
+m.show_mother()
+m.show_child()
+
+print("\n--- Multilevel Inheritance ---")
+ml = ChildMulti()
+ml.show_grandparent()
+ml.show_parent()
+ml.show_child()
+
+print("\n--- Hierarchical Inheritance ---")
+h1 = Child1()
+h2 = Child2()
+h1.show_parent()
+h1.show_child1()
+h2.show_parent()
+h2.show_child2()
+
+print("\n--- Hybrid Inheritance ---")
+hy = D()
+hy.show_a()
+hy.show_b()
+hy.show_c()
+hy.show_d()
+"""
+#Create a class to implement method Overriding.
+"""
+class Animal:
+    def sound(self):
+        print("Animals make different sounds.")
+
+class Dog(Animal):
+    def sound(self):
+        print("Dog barks: Woof Woof!")
+
+class Cat(Animal):
+    def sound(self):
+        print("Cat meows: Meow Meow!")
+
+
+print("--- Method Overriding Example ---")
+a = Animal()
+a.sound()   
+d = Dog()
+d.sound()   
+
+c = Cat()
+"""
+#Create a class for operator overloading which adds two Point Objects where Point has x & y values
+"""
+e.g. if
+P1(x=10,y=20)
+P2(x=12,y=15)
+"""
+"""
+class Point:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        if isinstance(other, Point):   
+            return Point(self.x + other.x, self.y + other.y)
+        return NotImplemented
+
+    def __str__(self):
+        return f"Point(x={self.x}, y={self.y})"
+
+print("--- Operator Overloading Example ---")
+P1 = Point(10, 20)
+P2 = Point(12, 15)
+
+P3 = P1 + P2   
+
+print("P1:", P1)
+print("P2:", P2)
+print("P3 = P1 + P2:", P3)
+"""
+
+                                               #============ Experiment-10 ============
+
+#Create numpy array to find sum of all elements in an array.
+"""
+import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50])
+
+total = np.sum(arr)
+
+print("Array elements:", arr)
+print("Sum of all elements:", total)
+"""
+#Create numpy array of (3,3) dimension. Now find sum of all rows & columns individually. Also find 2nd maximum element in the array.
+"""
+import numpy as np
+
+arr = np.array([[10, 20, 30],
+                [5, 25, 35],
+                [12, 18, 40]])
+
+print("Array:\n", arr)
+
+row_sum = np.sum(arr, axis=1)
+print("\nSum of each row:", row_sum)
+
+col_sum = np.sum(arr, axis=0)
+print("Sum of each column:", col_sum)
+
+
+flattened = arr.flatten()          
+sorted_arr = np.sort(flattened)   
+second_max = sorted_arr[-2]       
+print("\nSecond maximum element:", second_max)
+"""
+#Perform Matrix multiplication of any 2 n*n matrices.
+"""
+import numpy as np
+
+n = int(input("Enter the size of the matrix (n x n): "))
+
+print("\nEnter elements of Matrix A:")
+A = []
+for i in range(n):
+    row = list(map(int, input(f"Row {i+1} (enter {n} numbers): ").split()))
+    if len(row) != n:
+        raise ValueError(f"Row {i+1} must have {n} elements")
+    A.append(row)
+A = np.array(A)
+
+print("\nEnter elements of Matrix B:")
+B = []
+for i in range(n):
+    row = list(map(int, input(f"Row {i+1} (enter {n} numbers): ").split()))
+    if len(row) != n:
+        raise ValueError(f"Row {i+1} must have {n} elements")
+    B.append(row)
+B = np.array(B)
+
+C = np.dot(A, B)
+
+print("\nMatrix A:\n", A)
+print("\nMatrix B:\n", B)
+print("\nResult of Matrix Multiplication (A x B):\n", C)
+"""
+#Write a Pandas program to get the powers of an array values element-wise.
+"""
+Note: First array elements raised to powers from second array
+Sample data: {'X':[78,85,96,80,86], 'Y':[84,94,89,83,86],'Z':[86,97,96,72,83]}
+Expected Output:
+X Y Z
+0 78 84 86
+1 85 94 97
+2 96 89 96
+3 80 83 72
+4 86 86 83
+"""
