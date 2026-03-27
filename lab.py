@@ -1130,7 +1130,7 @@ for s in students:
     s.display()                                             
 """
 
-#Add constructor in the above class to initialize student details of n students and implement following methods:
+#Add constructor in the above class to initialize student details of n students and implement following methods
 """
 a)Display() student details
 b)Find Marks_percentage() of each student
@@ -1193,11 +1193,12 @@ for s in students:
 
 print("\n========== Class Average ==========")
 print(f"Average Percentage of Class: {class_average(students):.2f}%")
-"""
 
+"""
 #Create programs to implement different types of inheritances.
 """
-# 1. Single Inheritance
+# 1. Single Inheritance
+
 class Parent:
     def show_parent(self):
         print("Single Inheritance → Parent class")
@@ -1206,7 +1207,8 @@ class Child(Parent):
     def show_child(self):
         print("Single Inheritance → Child class")
         
-# 2. Multiple Inheritance
+# 2. Multiple Inheritance
+
 class Father:
     def show_father(self):
         print("Multiple Inheritance → Father class")
@@ -1321,6 +1323,7 @@ d = Dog()
 d.sound()   
 
 c = Cat()
+c.sound()
 """
 #Create a class for operator overloading which adds two Point Objects where Point has x & y values
 """
@@ -1328,7 +1331,7 @@ e.g. if
 P1(x=10,y=20)
 P2(x=12,y=15)
 """
-"""
+
 class Point:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -1351,7 +1354,7 @@ P3 = P1 + P2
 print("P1:", P1)
 print("P2:", P2)
 print("P3 = P1 + P2:", P3)
-"""
+
 
                                                #============ Experiment-10 ============
 
