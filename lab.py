@@ -1331,7 +1331,7 @@ e.g. if
 P1(x=10,y=20)
 P2(x=12,y=15)
 """
-
+"""
 class Point:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -1355,7 +1355,7 @@ print("P1:", P1)
 print("P2:", P2)
 print("P3 = P1 + P2:", P3)
 
-
+"""
                                                #============ Experiment-10 ============
 
 #Create numpy array to find sum of all elements in an array.
@@ -1433,3 +1433,81 @@ X Y Z
 3 80 83 72
 4 86 86 83
 """
+
+                                                        #========== Experiment-8 ===========
+
+#Create a simple Tkinter window with a title and fixed size.
+"""
+import tkinter as tk
+
+root = tk.Tk()
+
+root.title("My First Window")
+
+
+root.geometry("300x200")
+
+
+root.resizable(False, False)
+
+
+root.mainloop()
+
+"""
+#Design a GUI based basic calculator for performing basic arithmetic operations.
+"""
+import tkinter as tk
+
+# Function to update expression
+def press(key):
+    expression = entry.get()
+    entry.delete(0, tk.END)
+    entry.insert(0, expression + str(key))
+
+# Function to evaluate expression
+def equal_press():
+    try:
+        expression = entry.get()
+        result = str(eval(expression))
+        entry.delete(0, tk.END)
+        entry.insert(0, result)
+    except:
+        entry.delete(0, tk.END)
+        entry.insert(0, "Error")
+
+# Function to clear entry
+def clear():
+    entry.delete(0, tk.END)
+
+# Create main window
+root = tk.Tk()
+root.title("Calculator")
+root.geometry("400x400")
+root.resizable(False, False)
+
+# Entry widget to show calculations
+entry = tk.Entry(root, font=('Arial', 20), bd=10, relief=tk.RIDGE, justify='right')
+entry.grid(row=0, column=0, columnspan=4)
+
+# Buttons layout
+buttons = [
+    ('7',1,0), ('8',1,1), ('9',1,2), ('/',1,3),
+    ('4',2,0), ('5',2,1), ('6',2,2), ('*',2,3),
+    ('1',3,0), ('2',3,1), ('3',3,2), ('-',3,3),
+    ('0',4,0), ('.',4,1), ('+',4,2), ('=',4,3),
+]
+
+# Create buttons
+for (text, row, col) in buttons:
+    if text == '=':
+        tk.Button(root, text=text, width=5, height=2, command=equal_press).grid(row=row, column=col, padx=5, pady=5)
+    else:
+        tk.Button(root, text=text, width=5, height=2, command=lambda t=text: press(t)).grid(row=row, column=col, padx=5, pady=5)
+
+# Clear button
+tk.Button(root, text='C', width=22, height=2, command=clear).grid(row=5, column=0, columnspan=4, padx=5, pady=5)
+
+# Run the application
+root.mainloop()
+"""
+
