@@ -1509,7 +1509,7 @@ print("\nDataFrame after replacing missing values:")
 print(df_filled)
 """
 #Create a program to demonstrate different visual forms using Matplotlib.
-
+"""
 import matplotlib.pyplot as plt
 
 x = [1, 2, 3, 4, 5]
@@ -1546,7 +1546,7 @@ plt.figure()
 plt.pie(values, labels=categories, autopct='%1.1f%%')
 plt.title("Pie Chart")
 plt.show()
-
+"""
                                                                 #========== Experiment-8 ===========
 
 
@@ -1572,13 +1572,11 @@ root.mainloop()
 """
 import tkinter as tk
 
-# Function to update expression
 def press(key):
     expression = entry.get()
     entry.delete(0, tk.END)
     entry.insert(0, expression + str(key))
 
-# Function to evaluate expression
 def equal_press():
     try:
         expression = entry.get()
@@ -1589,21 +1587,17 @@ def equal_press():
         entry.delete(0, tk.END)
         entry.insert(0, "Error")
 
-# Function to clear entry
 def clear():
     entry.delete(0, tk.END)
 
-# Create main window
 root = tk.Tk()
 root.title("Calculator")
-root.geometry("400x400")
+root.geometry("400x300")
 root.resizable(False, False)
 
-# Entry widget to show calculations
 entry = tk.Entry(root, font=('Arial', 20), bd=10, relief=tk.RIDGE, justify='right')
 entry.grid(row=0, column=0, columnspan=4)
 
-# Buttons layout
 buttons = [
     ('7',1,0), ('8',1,1), ('9',1,2), ('/',1,3),
     ('4',2,0), ('5',2,1), ('6',2,2), ('*',2,3),
@@ -1611,17 +1605,471 @@ buttons = [
     ('0',4,0), ('.',4,1), ('+',4,2), ('=',4,3),
 ]
 
-# Create buttons
 for (text, row, col) in buttons:
     if text == '=':
         tk.Button(root, text=text, width=5, height=2, command=equal_press).grid(row=row, column=col, padx=5, pady=5)
     else:
         tk.Button(root, text=text, width=5, height=2, command=lambda t=text: press(t)).grid(row=row, column=col, padx=5, pady=5)
 
-# Clear button
 tk.Button(root, text='C', width=22, height=2, command=clear).grid(row=5, column=0, columnspan=4, padx=5, pady=5)
 
-# Run the application
 root.mainloop()
 """
+#Design a GUI for student registration for a course and store these details in a database. Use Tkinter for UI, SQLite/MySQL for database storage.
+"""
+import tkinter as tk
+from tkinter import ttk, messagebox
+import sqlite3
+from datetime import datetime
+# ================= DATABASE =================
+conn = sqlite3.connect("students.db")
+cursor = conn.cursor()
+cursor.execute("DROP TABLE IF EXISTS students")
+cursor.execute("""
+"""
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT,
+    phone TEXT,
+    course TEXT,
+    gender TEXT,
+    date TEXT
+)"""
+""")
+conn.commit()
+# ================= MAIN WINDOW =================
+root = tk.Tk()
+root.title("Student Registration System")
+root.geometry("900x550")
+root.resizable(False, False)
+# ================= VARIABLES =================
+name_var = tk.StringVar()
+email_var = tk.StringVar()
+phone_var = tk.StringVar()
+course_var = tk.StringVar()
+gender_var = tk.StringVar()
+# ================= FUNCTIONS =================
+def show_frame(frame):
+    frame.tkraise()
 
+def clear_fields():
+    name_var.set("")
+    email_var.set("")
+    phone_var.set("")
+    course_var.set("")
+    gender_var.set("")
+
+def add_student():
+    if (name_var.get() == "" or email_var.get() == "" or
+        phone_var.get() == "" or course_var.get() == "" or
+        gender_var.get() == ""):
+
+        messagebox.showerror("Error", "All fields are required!")
+        return
+
+    cursor.execute(
+        "INSERT INTO students (name,email,phone,course,gender,date) VALUES (?,?,?,?,?,?)",
+        (
+            name_var.get(),
+            email_var.get(),
+            phone_var.get(),
+            course_var.get(),
+            gender_var.get(),
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+    )
+    conn.commit()
+
+    messagebox.showinfo("Success", "Student Registered Successfully!")
+    clear_fields()
+
+def show_students():
+    tree.delete(*tree.get_children())
+
+    cursor.execute("SELECT * FROM students")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        tree.insert("", "end", values=row)
+
+def go_to_table():
+    show_students()
+    show_frame(frame2)
+
+# ================= FRAMES =================
+frame1 = tk.Frame(root, bg="#ecf0f1")
+frame2 = tk.Frame(root, bg="#ecf0f1")
+
+for frame in (frame1, frame2):
+    frame.place(x=0, y=0, width=900, height=550)
+
+# ================= PAGE 1 =================
+tk.Label(frame1, text="🎓 Student Registration Form",
+         font=("Arial", 20, "bold"),
+         bg="#2c3e50", fg="white", pady=10).pack(fill=tk.X)
+
+form = tk.Frame(frame1, bg="white", bd=3, relief=tk.RIDGE)
+form.place(x=250, y=80, width=400, height=360)
+
+def field(label, var, y):
+    tk.Label(form, text=label, font=("Arial", 12, "bold"),
+             bg="white").place(x=20, y=y)
+    tk.Entry(form, textvariable=var).place(x=20, y=y+25, width=350)
+
+field("Name", name_var, 10)
+field("Email", email_var, 70)
+field("Phone", phone_var, 130)
+
+tk.Label(form, text="Course", bg="white").place(x=20, y=190)
+ttk.Combobox(form, textvariable=course_var,
+             values=["B.Tech", "BCA", "MCA", "MBA", "B.Sc"],
+             state="readonly").place(x=20, y=215, width=350)
+
+tk.Label(form, text="Gender", bg="white").place(x=20, y=250)
+ttk.Combobox(form, textvariable=gender_var,
+             values=["Male", "Female", "Other"],
+             state="readonly").place(x=20, y=275, width=350)
+
+tk.Button(frame1, text="Submit", bg="green", fg="white",
+          command=add_student).place(x=300, y=460, width=120)
+
+tk.Button(frame1, text="View Data →", bg="blue", fg="white",
+          command=go_to_table).place(x=450, y=460, width=120)
+
+# ================= PAGE 2 =================
+tk.Label(frame2, text="📊 Registered Students",
+         font=("Arial", 20, "bold"),
+         bg="#34495e", fg="white", pady=10).pack(fill=tk.X)
+
+table_frame = tk.Frame(frame2)
+table_frame.place(x=50, y=80, width=800, height=380)
+
+scroll_x = tk.Scrollbar(table_frame, orient=tk.HORIZONTAL)
+scroll_y = tk.Scrollbar(table_frame, orient=tk.VERTICAL)
+
+tree = ttk.Treeview(
+    table_frame,
+    columns=("ID", "Name", "Email", "Phone", "Course", "Gender", "Date"),
+    xscrollcommand=scroll_x.set,
+    yscrollcommand=scroll_y.set
+)
+
+scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
+scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
+
+scroll_x.config(command=tree.xview)
+scroll_y.config(command=tree.yview)
+
+for col in ("ID", "Name", "Email", "Phone", "Course", "Gender", "Date"):
+    tree.heading(col, text=col)
+    tree.column(col, anchor=tk.CENTER, width=110)
+
+tree["show"] = "headings"
+tree.pack(fill=tk.BOTH, expand=1)
+
+tk.Button(frame2, text="← Back", bg="orange", fg="white",
+          command=lambda: show_frame(frame1)).place(x=50, y=480, width=120)
+
+# ================= START =================
+show_frame(frame1)
+root.mainloop()
+"""
+#Create a GUI based task manager where users can add, edit and remove tasks. Use Tkinter (buttons, listbox), SQLite/MySQL (task storage).
+"""
+import tkinter as tk
+from tkinter import messagebox
+import sqlite3
+
+# ================= DATABASE =================
+conn = sqlite3.connect("tasks.db")
+cursor = conn.cursor()
+
+# Create table
+cursor.execute("""
+"""
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task TEXT,
+    status TEXT
+)"""
+""")
+conn.commit()
+
+# ================= FUNCTIONS =================
+def load_tasks():
+    listbox.delete(0, tk.END)
+    cursor.execute("SELECT id, task, status FROM tasks")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        task_text = f"{row[1]} ({row[2]})"
+        listbox.insert(tk.END, task_text)
+
+def add_task():
+    task = entry.get()
+
+    if task == "":
+        messagebox.showerror("Error", "Task cannot be empty!")
+        return
+
+    cursor.execute("INSERT INTO tasks (task, status) VALUES (?, ?)", (task, "Pending"))
+    conn.commit()
+
+    entry.delete(0, tk.END)
+    load_tasks()
+
+def delete_task():
+    try:
+        selected = listbox.curselection()[0]
+        cursor.execute("SELECT id FROM tasks")
+        task_id = cursor.fetchall()[selected][0]
+
+        cursor.execute("DELETE FROM tasks WHERE id=?", (task_id,))
+        conn.commit()
+
+        load_tasks()
+    except:
+        messagebox.showerror("Error", "Select a task first!")
+
+def mark_complete():
+    try:
+        selected = listbox.curselection()[0]
+        cursor.execute("SELECT id FROM tasks")
+        task_id = cursor.fetchall()[selected][0]
+
+        cursor.execute("UPDATE tasks SET status='Completed' WHERE id=?", (task_id,))
+        conn.commit()
+
+        load_tasks()
+    except:
+        messagebox.showerror("Error", "Select a task first!")
+
+def edit_task():
+    try:
+        selected = listbox.curselection()[0]
+        new_task = entry.get()
+
+        if new_task == "":
+            messagebox.showerror("Error", "Enter new task text!")
+            return
+
+        cursor.execute("SELECT id FROM tasks")
+        task_id = cursor.fetchall()[selected][0]
+
+        cursor.execute("UPDATE tasks SET task=? WHERE id=?", (new_task, task_id))
+        conn.commit()
+
+        entry.delete(0, tk.END)
+        load_tasks()
+    except:
+        messagebox.showerror("Error", "Select a task to edit!")
+
+# ================= GUI =================
+root = tk.Tk()
+root.title("Task Manager")
+root.geometry("500x500")
+root.configure(bg="#ecf0f1")
+
+# Title
+tk.Label(root, text="📝 Task Manager",
+         font=("Arial", 20, "bold"),
+         bg="#2c3e50", fg="white").pack(fill=tk.X)
+
+# Entry
+entry = tk.Entry(root, font=("Arial", 14))
+entry.pack(pady=10, padx=20, fill=tk.X)
+
+# Buttons Frame
+btn_frame = tk.Frame(root, bg="#ecf0f1")
+btn_frame.pack(pady=10)
+
+tk.Button(btn_frame, text="Add Task", bg="green", fg="white",
+          width=12, command=add_task).grid(row=0, column=0, padx=5)
+
+tk.Button(btn_frame, text="Edit Task", bg="blue", fg="white",
+          width=12, command=edit_task).grid(row=0, column=1, padx=5)
+
+tk.Button(btn_frame, text="Delete Task", bg="red", fg="white",
+          width=12, command=delete_task).grid(row=1, column=0, padx=5, pady=5)
+
+tk.Button(btn_frame, text="Mark Complete", bg="purple", fg="white",
+          width=12, command=mark_complete).grid(row=1, column=1, padx=5, pady=5)
+
+# Listbox + Scrollbar
+frame = tk.Frame(root)
+frame.pack(pady=10, fill=tk.BOTH, expand=True)
+
+scrollbar = tk.Scrollbar(frame)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+listbox = tk.Listbox(frame, font=("Arial", 12), yscrollcommand=scrollbar.set)
+listbox.pack(fill=tk.BOTH, expand=True)
+
+scrollbar.config(command=listbox.yview)
+
+# Load data
+load_tasks()
+
+root.mainloop()
+"""
+#Design a login and signup authentication system.
+import tkinter as tk
+from tkinter import messagebox
+import sqlite3
+
+# ================= DATABASE =================
+conn = sqlite3.connect("users.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT
+)
+""")
+conn.commit()
+
+# ================= MAIN WINDOW =================
+root = tk.Tk()
+root.title("Login & Signup System")
+root.geometry("420x450")
+root.resizable(False, False)
+
+# ================= FUNCTIONS =================
+def show_frame(frame):
+    frame.tkraise()
+
+def clear_login():
+    login_user.set("")
+    login_pass.set("")
+
+def clear_signup():
+    signup_user.set("")
+    signup_pass.set("")
+
+def signup():
+    username = signup_user.get()
+    password = signup_pass.get()
+
+    if username == "" or password == "":
+        messagebox.showerror("Error", "All fields required!")
+        return
+
+    try:
+        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        messagebox.showinfo("Success", "Account created successfully!")
+        clear_signup()
+        show_frame(login_frame)
+    except:
+        messagebox.showerror("Error", "Username already exists!")
+
+def login():
+    username = login_user.get()
+    password = login_pass.get()
+
+    cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+    result = cursor.fetchone()
+
+    if result:
+        messagebox.showinfo("Success", f"Welcome {username}!")
+        clear_login()
+    else:
+        messagebox.showerror("Error", "Invalid Username or Password")
+
+def forgot_password():
+    username = login_user.get()
+
+    if username == "":
+        messagebox.showerror("Error", "Enter username first!")
+        return
+
+    cursor.execute("SELECT password FROM users WHERE username=?", (username,))
+    result = cursor.fetchone()
+
+    if result:
+        messagebox.showinfo("Password Found", f"Your password is: {result[0]}")
+    else:
+        messagebox.showerror("Error", "Username not found!")
+
+# ================= FRAMES =================
+login_frame = tk.Frame(root, bg="#ecf0f1")
+signup_frame = tk.Frame(root, bg="#ecf0f1")
+
+for frame in (login_frame, signup_frame):
+    frame.place(x=0, y=0, width=420, height=450)
+
+# ================= LOGIN PAGE =================
+tk.Label(login_frame, text="🔐 Login",
+         font=("Arial", 20, "bold"),
+         bg="#2c3e50", fg="white", pady=10).pack(fill=tk.X)
+
+# Username
+tk.Label(login_frame, text="Username",
+         font=("Arial", 12, "bold"),
+         bg="#ecf0f1").place(x=40, y=100)
+
+login_user = tk.StringVar()
+tk.Entry(login_frame, textvariable=login_user,
+         font=("Arial", 12)).place(x=40, y=130, width=300)
+
+# Password
+tk.Label(login_frame, text="Password",
+         font=("Arial", 12, "bold"),
+         bg="#ecf0f1").place(x=40, y=180)
+
+login_pass = tk.StringVar()
+tk.Entry(login_frame, textvariable=login_pass,
+         show="*", font=("Arial", 12)).place(x=40, y=210, width=300)
+
+# Buttons
+tk.Button(login_frame, text="Login", bg="green", fg="white",
+          width=15, command=login).place(x=130, y=260)
+
+tk.Button(login_frame, text="Clear", bg="orange", fg="white",
+          width=10, command=clear_login).place(x=40, y=310)
+
+tk.Button(login_frame, text="Forgot Password?",
+          fg="blue", bd=0, command=forgot_password).place(x=220, y=310)
+
+tk.Button(login_frame, text="Go to Signup",
+          command=lambda: show_frame(signup_frame)).place(x=150, y=350)
+
+# ================= SIGNUP PAGE =================
+tk.Label(signup_frame, text="📝 Signup",
+         font=("Arial", 20, "bold"),
+         bg="#34495e", fg="white", pady=10).pack(fill=tk.X)
+
+# Username
+tk.Label(signup_frame, text="Username",
+         font=("Arial", 12, "bold"),
+         bg="#ecf0f1").place(x=40, y=100)
+
+signup_user = tk.StringVar()
+tk.Entry(signup_frame, textvariable=signup_user,
+         font=("Arial", 12)).place(x=40, y=130, width=300)
+
+# Password
+tk.Label(signup_frame, text="Password",
+         font=("Arial", 12, "bold"),
+         bg="#ecf0f1").place(x=40, y=180)
+
+signup_pass = tk.StringVar()
+tk.Entry(signup_frame, textvariable=signup_pass,
+         show="*", font=("Arial", 12)).place(x=40, y=210, width=300)
+
+# Buttons
+tk.Button(signup_frame, text="Signup", bg="blue", fg="white",
+          width=15, command=signup).place(x=130, y=260)
+
+tk.Button(signup_frame, text="Clear", bg="orange", fg="white",
+          width=10, command=clear_signup).place(x=40, y=310)
+
+tk.Button(signup_frame, text="Back to Login",
+          command=lambda: show_frame(login_frame)).place(x=150, y=350)
+
+# ================= START =================
+show_frame(login_frame)
+root.mainloop()
